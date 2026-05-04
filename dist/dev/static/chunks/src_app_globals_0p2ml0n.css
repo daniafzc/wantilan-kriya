@@ -1,0 +1,85 @@
+/* [project]/src/app/globals.css [app-client] (css) */
+:root {
+  --ink: #1a1a1a;
+  --ink-soft: #4a4a4a;
+  --ink-muted: #7a7a7a;
+  --paper: #fafaf7;
+  --line: #e5e0d3;
+  --line-soft: #efeae0;
+  --terracotta: #c2553a;
+  --terracotta-soft: #f3d9d0;
+  --terracotta-deep: #9c402a;
+  --sand: #d9c9a6;
+  --sand-soft: #f4ecd8;
+  --green: #4a6b48;
+  --green-soft: #d6e0d3;
+  --gold: #b8893d;
+  --gold-soft: #f1e3c4;
+  --plum: #6b3f5b;
+  --plum-soft: #e8d6df;
+  --teal: #2f6b6b;
+  --teal-soft: #d1e3e3;
+}
+
+@theme inline {
+  --font-sans: var(--font-satoshi);
+  --font-mono: var(--font-geist-mono);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  background-color: #fafaf7;
+}
+
+body {
+  color: #1a1a1a;
+  font-family: var(--font-satoshi), sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-color: #fafaf7;
+}
+
+h1, h2, h3, .font-serif {
+  font-family: var(--font-sentient), serif;
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: none;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--line);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--sand);
+}
+
+::selection {
+  background: var(--terracotta-soft);
+  color: var(--ink);
+}
+
+:focus-visible {
+  outline: 2px solid var(--terracotta);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, :before, :after {
+    transition-duration: .01ms !important;
+    animation-duration: .01ms !important;
+    animation-iteration-count: 1 !important;
+  }
+}
+
+/*# sourceMappingURL=src_app_globals_0p2ml0n.css.map*/
