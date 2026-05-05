@@ -9,17 +9,12 @@ import { CALCULATOR_OPTIONS } from "@/lib/constants";
 
 export function CalculatorForm() {
   const router = useRouter();
-  const [formData, setFormData] = useState<{
-    jenisKriya: string;
-    bahanUtama: string;
-    targetPasar: string;
-    tingkatKerumitan: string;
-    dimensi: string;
-  }>({
-    jenisKriya: CALCULATOR_OPTIONS.jenisKriya[0],
-    bahanUtama: CALCULATOR_OPTIONS.bahanUtama[0],
-    targetPasar: CALCULATOR_OPTIONS.targetPasar[0],
-    tingkatKerumitan: CALCULATOR_OPTIONS.tingkatKerumitan[0],
+  // Di dalam CalculatorForm.tsx
+  const [formData, setFormData] = useState({
+    jenisKriya: CALCULATOR_OPTIONS.jenisKriya[0] as string,
+    bahanUtama: CALCULATOR_OPTIONS.bahanUtama[0] as string,
+    targetPasar: CALCULATOR_OPTIONS.targetPasar[0] as string,
+    tingkatKerumitan: CALCULATOR_OPTIONS.tingkatKerumitan[0] as string,
     dimensi: "",
   });
 
