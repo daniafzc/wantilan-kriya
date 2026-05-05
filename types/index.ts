@@ -23,7 +23,7 @@ export interface Community {
   description: string;
   moderator: string;
   color: string;
-  rules: string[];
+  rules: readonly string[];
 }
 
 export interface Category {
