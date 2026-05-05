@@ -1,3 +1,4 @@
+// app/submit/SubmitPageClient.tsx
 "use client";
 
 import { useSearchParams } from "next/navigation";
@@ -9,7 +10,7 @@ import { SubmitConfirmation } from "@/components/sections/SubmitConfirmation";
 import { CommunityModal } from "@/components/shared/CommunityModal";
 import { useCommunityModal } from "@/hooks/useCommunityModal";
 
-export default function SubmitPage() {
+export function SubmitPageClient() {
   const searchParams = useSearchParams();
   const step = searchParams.get("step") || "1";
   const { community, open, showRules, closeModal } = useCommunityModal();
