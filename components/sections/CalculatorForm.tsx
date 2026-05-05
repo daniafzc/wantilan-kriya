@@ -9,7 +9,13 @@ import { CALCULATOR_OPTIONS } from "@/lib/constants";
 
 export function CalculatorForm() {
   const router = useRouter();
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<{
+    jenisKriya: string;
+    bahanUtama: string;
+    targetPasar: string;
+    tingkatKerumitan: string;
+    dimensi: string;
+  }>({
     jenisKriya: CALCULATOR_OPTIONS.jenisKriya[0],
     bahanUtama: CALCULATOR_OPTIONS.bahanUtama[0],
     targetPasar: CALCULATOR_OPTIONS.targetPasar[0],
@@ -19,24 +25,30 @@ export function CalculatorForm() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    // In real app, pass data via query params or state management
     router.push("/kalkulator/hasil");
   };
 
   return (
-    <form onSubmit={handleSubmit} className="bg-white border border-line rounded-2xl p-6 md:p-9">
+    <form
+      onSubmit={handleSubmit}
+      className="bg-white border border-line rounded-2xl p-6 md:p-9"
+    >
       <div className="grid md:grid-cols-2 gap-4">
         <Select
           label="Jenis Kriya"
           options={[...CALCULATOR_OPTIONS.jenisKriya]}
           value={formData.jenisKriya}
-          onChange={(e) => setFormData({ ...formData, jenisKriya: e.target.value })}
+          onChange={(e) =>
+            setFormData({ ...formData, jenisKriya: e.target.value })
+          }
         />
         <Select
           label="Bahan Utama"
           options={[...CALCULATOR_OPTIONS.bahanUtama]}
           value={formData.bahanUtama}
-          onChange={(e) => setFormData({ ...formData, bahanUtama: e.target.value })}
+          onChange={(e) =>
+            setFormData({ ...formData, bahanUtama: e.target.value })
+          }
         />
       </div>
       <div className="grid md:grid-cols-2 gap-4">
@@ -44,13 +56,17 @@ export function CalculatorForm() {
           label="Target Pasar"
           options={[...CALCULATOR_OPTIONS.targetPasar]}
           value={formData.targetPasar}
-          onChange={(e) => setFormData({ ...formData, targetPasar: e.target.value })}
+          onChange={(e) =>
+            setFormData({ ...formData, targetPasar: e.target.value })
+          }
         />
         <Select
           label="Tingkat Kerumitan"
           options={[...CALCULATOR_OPTIONS.tingkatKerumitan]}
           value={formData.tingkatKerumitan}
-          onChange={(e) => setFormData({ ...formData, tingkatKerumitan: e.target.value })}
+          onChange={(e) =>
+            setFormData({ ...formData, tingkatKerumitan: e.target.value })
+          }
         />
       </div>
       <Input
