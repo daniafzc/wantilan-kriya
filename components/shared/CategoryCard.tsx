@@ -2,6 +2,15 @@
 
 import Link from "next/link";
 import { cn } from "@/lib/utils";
+import { PiWrench, PiFlowerLotus, PiGlobe, PiHandshake } from "react-icons/pi";
+import type { IconType } from "react-icons";
+
+const ICON_MAP: Record<string, IconType> = {
+  PiWrench,
+  PiFlowerLotus,
+  PiGlobe,
+  PiHandshake,
+};
 
 interface CategoryCardProps {
   slug: string;
@@ -24,14 +33,34 @@ export function CategoryCard({
   variant = "grid",
   className,
 }: CategoryCardProps) {
-  const colorStyles: Record<string, { border: string; iconBg: string; iconText: string }> = {
-    green: { border: "border-t-green", iconBg: "bg-green-soft", iconText: "text-green" },
-    gold: { border: "border-t-gold", iconBg: "bg-gold-soft", iconText: "text-gold" },
-    plum: { border: "border-t-plum", iconBg: "bg-plum-soft", iconText: "text-plum" },
-    teal: { border: "border-t-teal", iconBg: "bg-teal-soft", iconText: "text-teal" },
+  const colorStyles: Record<
+    string,
+    { border: string; iconBg: string; iconText: string }
+  > = {
+    green: {
+      border: "border-t-green",
+      iconBg: "bg-green-soft",
+      iconText: "text-green",
+    },
+    gold: {
+      border: "border-t-gold",
+      iconBg: "bg-gold-soft",
+      iconText: "text-gold",
+    },
+    plum: {
+      border: "border-t-plum",
+      iconBg: "bg-plum-soft",
+      iconText: "text-plum",
+    },
+    teal: {
+      border: "border-t-teal",
+      iconBg: "bg-teal-soft",
+      iconText: "text-teal",
+    },
   };
 
   const styles = colorStyles[color] || colorStyles.gold;
+  const IconComponent = ICON_MAP[icon];
 
   if (variant === "list") {
     return (
@@ -42,17 +71,33 @@ export function CategoryCard({
           "border-l-[6px] border-l-transparent",
           styles.border.replace("border-t", "border-l"),
           "hover:-translate-y-1 hover:shadow-[0_14px_30px_rgba(0,0,0,0.06)] transition-all duration-200",
-          className
+          className,
         )}
       >
         <div className="flex items-center gap-4 mb-3.5">
-          <div className={cn("w-14 h-14 rounded-[14px] flex items-center justify-center text-[26px]", styles.iconBg, styles.iconText)}>
-            {icon}
+          <div
+            className={cn(
+              "w-14 h-14 rounded-[14px] flex items-center justify-center",
+              styles.iconBg,
+              styles.iconText,
+            )}
+          >
+            {
+              IconComponent ? (
+                <IconComponent size={28} />
+              ) : (
+                <span className="text-[26px]">{icon}</span>
+              ) // fallback ke emoji
+            }
           </div>
           <h3 className="font-serif text-[22px] font-bold">{name}</h3>
         </div>
-        <p className="text-sm text-ink-soft leading-relaxed mb-3">{description}</p>
-        <span className="text-xs text-ink-muted font-semibold">{articleCount}</span>
+        <p className="text-sm text-ink-soft leading-relaxed mb-3">
+          {description}
+        </p>
+        <span className="text-xs text-ink-muted font-semibold">
+          {articleCount}
+        </span>
       </Link>
     );
   }
@@ -65,15 +110,31 @@ export function CategoryCard({
         "border-t-[4px] border-t-transparent",
         styles.border,
         "hover:-translate-y-1 hover:shadow-[0_12px_28px_rgba(0,0,0,0.06)] transition-all duration-200",
-        className
+        className,
       )}
     >
-      <div className={cn("w-12 h-12 rounded-xl flex items-center justify-center text-2xl mb-4", styles.iconBg, styles.iconText)}>
-        {icon}
+      <div
+        className={cn(
+          "w-12 h-12 rounded-xl flex items-center justify-center mb-4",
+          styles.iconBg,
+          styles.iconText,
+        )}
+      >
+        {
+          IconComponent ? (
+            <IconComponent size={24} />
+          ) : (
+            <span className="text-2xl">{icon}</span>
+          ) // fallback ke emoji
+        }
       </div>
       <h3 className="text-lg font-bold mb-2">{name}</h3>
-      <p className="text-sm text-ink-soft leading-relaxed mb-3.5">{description}</p>
-      <span className="text-xs text-ink-muted font-semibold">{articleCount}</span>
+      <p className="text-sm text-ink-soft leading-relaxed mb-3.5">
+        {description}
+      </p>
+      <span className="text-xs text-ink-muted font-semibold">
+        {articleCount}
+      </span>
     </Link>
   );
 }
