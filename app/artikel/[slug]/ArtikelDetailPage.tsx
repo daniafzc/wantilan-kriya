@@ -2,12 +2,14 @@
 
 import { useParams } from "next/navigation";
 import { ARTICLES } from "@/lib/constants";
+import { useEffect, useState } from "react";
 import { ArticleHero } from "@/components/sections/ArticleHero";
 import { ArticleContent } from "@/components/sections/ArticleContent";
 import { ArticleSidebar } from "@/components/sections/ArticleSidebar";
 import { CommunityModal } from "@/components/shared/CommunityModal";
 import { useCommunityModal } from "@/hooks/useCommunityModal";
 import { notFound } from "next/navigation";
+import { Article, Community } from "@/types"
 
 const articleContent = `Dulu, sebelum pewarna kimia masuk ke desa kami, semua benang tenun endek diwarnai dengan tumbuhan dari kebun sendiri. Saya belajar dari ibu saya, dan ibu saya belajar dari neneknya. Pengetahuan ini hampir hilang ketika generasi muda lebih memilih pewarna sintetis yang lebih cepat.
 
@@ -23,15 +25,67 @@ Soga dari kulit kayu mahoni memberikan warna cokelat hangat yang khas pada motif
 
 Pasar internasional, terutama Eropa dan Jepang, kini lebih menghargai produk dengan pewarna alami karena ramah lingkungan. Endek dengan pewarna alami bisa dijual 2-3 kali lipat dibanding pewarna sintetis di pasar Etsy. Ini bukan hanya soal melestarikan tradisi, tapi juga peluang ekonomi yang nyata.`;
 
-export default function ArtikelDetailPage() {
-  const params = useParams();
-  const slug = params.slug as string;
+interface ArtikelDetailPageProps {
+  slug: string;
+}
+
+export default function ArtikelDetailPage({ slug }: ArtikelDetailPageProps) {
   const { community, open, showRules, closeModal } = useCommunityModal();
+  const [article, setArticle] = useState<Article | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [relatedCommunity, setRelatedCommunity] = useState<Community | null>(null);
 
-  const article = ARTICLES.find((a) => a.slug === slug);
+  useEffect(() => {
 
+    async function fetchArticle() {
+      try {
+        const res = await fetch(
+          `http://127.0.0.1:8000/artikel/${slug}`
+        );
+
+        if (res.status === 404) {
+          notFound();
+        }
+
+        if (!res.ok) {
+          throw new Error("Gagal mengambil artikel");
+        }
+        const data = await res.json();
+        if (data.community_slug) {
+          const communityRes = await fetch(
+            `http://127.0.0.1:8000/komunitas/${data.community_slug}`
+          );
+          if (communityRes.ok) {
+            const communityData = await communityRes.json();
+            setRelatedCommunity(communityData);
+          }
+        }
+        setArticle(data);
+
+      } catch (error) {
+        console.error(error);
+      } finally {
+
+        setLoading(false);
+      }
+    }
+
+    fetchArticle();
+
+  }, [slug]);
+
+  // LOADING STATE
+  if (loading) {
+    return (
+      <div className="p-10">
+        Loading...
+      </div>
+    );
+  }
+
+  // JIKA artikel null
   if (!article) {
-    notFound();
+    return notFound();
   }
 
   return (
@@ -45,23 +99,24 @@ export default function ArtikelDetailPage() {
               categoryColor={article.imageColor}
               title={article.title}
               author={article.author}
-              authorInitial={article.authorInitial}
-              authorRole={article.authorRole}
-              authorLocation={article.authorLocation}
-              readTime={article.readTime}
-              content={articleContent}
+              authorInitial={article.author_initial}
+              authorRole={article.author_role}
+              authorLocation={article.author_location}
+              readTime={article.read_time}
+              content={article.content ?? "Tidak ada konten?"}
               relatedCommunity={{
                 label: "Lanjutkan diskusi di WhatsApp",
-                title: "Tenun Endek & Pewarna Alami",
-                subtitle: "142 anggota aktif berdiskusi tiap hari",
+                title: relatedCommunity?.name ?? "Komunitas",
+                subtitle: `${relatedCommunity?.members ?? 0} anggota`,
                 onClick: () => showRules("endek"),
               }}
             />
+            {/* <div className="mb-4"></div> */}
             <ArticleSidebar
               relatedCommunity={{
                 label: "Komunitas Terkait",
-                title: "Tenun Endek & Pewarna Alami",
-                subtitle: "142 anggota · Aktif tiap hari",
+                title: relatedCommunity?.name ?? "Komunitas",
+                subtitle: `${relatedCommunity?.members ?? 0} anggota`,
                 onClick: () => showRules("endek"),
               }}
             />
