@@ -2,10 +2,11 @@
 import { ARTICLES } from "@/lib/constants";
 import ArtikelDetailPage from "./ArtikelDetailPage";
 
-export function generateStaticParams() {
-  return ARTICLES.map((article) => ({ slug: article.slug }));
+// Page menerima params dari Next.js
+interface PageProps {
+  params: { slug: string };
 }
 
-export default function Page() {
-  return <ArtikelDetailPage />;
+export default function Page({ params }: PageProps) {
+  return <ArtikelDetailPage slug={params.slug} />;
 }
