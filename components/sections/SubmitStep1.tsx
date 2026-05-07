@@ -2,6 +2,8 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import { IoArrowBack, IoArrowForward, IoBookOutline } from "react-icons/io5";
+import { LuMessageSquareText } from "react-icons/lu";
 import { SubmitStepper } from "./SubmitStepper";
 import { ChoiceCard } from "@/components/shared/ChoiceCard";
 import { Button } from "@/components/ui/Button";
@@ -15,7 +17,8 @@ export function SubmitStep1() {
         href="/"
         className="inline-flex items-center gap-1.5 text-sm text-ink-soft hover:text-terracotta transition-colors mb-6"
       >
-        ‹ Batal & kembali ke Beranda
+        <IoArrowBack className="w-4 h-4" />
+        Batal & kembali ke Beranda
       </Link>
 
       <SubmitStepper currentStep={1} />
@@ -24,11 +27,12 @@ export function SubmitStep1() {
         Apa yang ingin Anda bagikan?
       </h2>
       <p className="text-base text-ink-muted mb-6 md:mb-8">
-        Pilih salah satu — Anda bisa selesaikan dalam 2 menit, tanpa perlu daftar akun.
+        Pilih salah satu — Anda bisa selesaikan dalam 2 menit, tanpa perlu
+        daftar akun.
       </p>
 
       <ChoiceCard
-        icon="📖"
+        icon={<IoBookOutline className="w-6 h-6" />}
         title="Cerita / Pengalaman"
         description="Pengalaman membuat karya, ekspor pertama, atau cerita motif keluarga yang ingin Anda lestarikan."
         selected={selected === "story"}
@@ -36,7 +40,7 @@ export function SubmitStep1() {
         className="mb-3.5"
       />
       <ChoiceCard
-        icon="❓"
+        icon={<LuMessageSquareText className="w-6 h-6" />}
         iconBg="bg-green-soft"
         iconText="text-green"
         title="Pertanyaan untuk Komunitas"
@@ -47,7 +51,9 @@ export function SubmitStep1() {
 
       <div className="flex justify-end mt-8">
         <Link href="/submit?step=2">
-          <Button>Lanjut →</Button>
+          <Button className="inline-flex items-center gap-2">
+            Lanjut <IoArrowForward className="w-4 h-4" />
+          </Button>
         </Link>
       </div>
     </div>
