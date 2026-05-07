@@ -10,4 +10,5 @@ Setup:
     . venv/bin/activate
     pip install -r requirements.txt
 Run dengan:
+    cd backend
     uvicorn main:app --reload
