@@ -1,0 +1,13 @@
+{
+  "project": "Wantilan Kriya",
+  "model_type": "XGBoost + SentenceTransformer",
+  "bert_model": "all-MiniLM-L6-v2",
+  "xgboost_expected_features": 406,
+  "bert_dimension": 384,
+  "numeric_features": 22,
+  "total_features": 406,
+  "metrics": {
+    "rmse": -1,
+    "r2": -1
+  }
+}
