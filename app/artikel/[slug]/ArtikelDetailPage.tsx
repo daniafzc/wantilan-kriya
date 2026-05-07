@@ -25,6 +25,9 @@ Soga dari kulit kayu mahoni memberikan warna cokelat hangat yang khas pada motif
 
 Pasar internasional, terutama Eropa dan Jepang, kini lebih menghargai produk dengan pewarna alami karena ramah lingkungan. Endek dengan pewarna alami bisa dijual 2-3 kali lipat dibanding pewarna sintetis di pasar Etsy. Ini bukan hanya soal melestarikan tradisi, tapi juga peluang ekonomi yang nyata.`;
 
+const API_BASE =
+  process.env.NEXT_PUBLIC_API_URL ?? "http://127.0.0.1:8000";
+
 interface ArtikelDetailPageProps {
   slug: string;
 }
@@ -40,7 +43,7 @@ export default function ArtikelDetailPage({ slug }: ArtikelDetailPageProps) {
     async function fetchArticle() {
       try {
         const res = await fetch(
-          `http://127.0.0.1:8000/artikel/${slug}`
+          `${API_BASE}/artikel/${slug}`
         );
 
         if (res.status === 404) {
@@ -53,7 +56,7 @@ export default function ArtikelDetailPage({ slug }: ArtikelDetailPageProps) {
         const data = await res.json();
         if (data.community_slug) {
           const communityRes = await fetch(
-            `http://127.0.0.1:8000/komunitas/${data.community_slug}`
+            `${API_BASE}/komunitas/${data.community_slug}`
           );
           if (communityRes.ok) {
             const communityData = await communityRes.json();
