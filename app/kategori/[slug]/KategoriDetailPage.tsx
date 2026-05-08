@@ -1,26 +1,188 @@
 "use client";
 
-import { useParams } from "next/navigation";
+import { useEffect, useState } from "react";
+import { notFound } from "next/navigation";
 import Link from "next/link";
-import { CATEGORIES, ARTICLES } from "@/lib/constants";
 import { ArticleCard } from "@/components/shared/ArticleCard";
 import { RelatedCommunityCta } from "@/components/shared/RelatedCommunityCta";
 import { CommunityModal } from "@/components/shared/CommunityModal";
 import { useCommunityModal } from "@/hooks/useCommunityModal";
-import { notFound } from "next/navigation";
 
-export default function KategoriDetailPage() {
-  const params = useParams();
-  const slug = params.slug as string;
+const API_BASE = process.env.NEXT_PUBLIC_API_URL ?? "http://127.0.0.1:8000";
+
+/* ════════════════════════════════════════════════════════════════════════
+   Backend payload shapes
+   ════════════════════════════════════════════════════════════════════════ */
+
+interface KategoriPayload {
+  id: string;
+  slug: string;
+  name: string;
+  description: string | null;
+  color: string | null;
+  article_count: number;
+  community_slug?: string;
+}
+
+interface ArtikelPayload {
+  id: string;
+  slug: string;
+  title: string;
+  author: string;
+  author_initial: string | null;
+  author_role: string | null;
+  author_location: string | null;
+  excerpt: string | null;
+  content: string | null;
+  read_time: string;
+  badge: string | null;
+  image_color: string | null;
+  category: string | null;
+  category_slug: string | null;
+  published: boolean;
+  created_at: string | null;
+}
+
+interface KomunitasPayload {
+  id: string;
+  slug: string;
+  name: string;
+  description: string | null;
+  members: number;
+  whatsapp_link: string | null;
+  color: string | null;
+  rules: string[];
+}
+
+/* ════════════════════════════════════════════════════════════════════════
+   Fetch status — a single source of truth replaces `loading` + `missing`
+   ════════════════════════════════════════════════════════════════════════ */
+
+type Status = "loading" | "ready" | "missing" | "error";
+
+interface Props {
+  slug: string;
+}
+
+export default function KategoriDetailPage({ slug }: Props) {
   const { community, open, showRules, closeModal } = useCommunityModal();
 
-  const category = CATEGORIES.find((c) => c.slug === slug);
+  const [status, setStatus] = useState<Status>("loading");
+  const [category, setCategory] = useState<KategoriPayload | null>(null);
+  const [articles, setArticles] = useState<ArtikelPayload[]>([]);
+  const [relatedCommunity, setRelatedCommunity] =
+    useState<KomunitasPayload | null>(null);
 
-  if (!category) {
+useEffect(() => {
+  const controller = new AbortController();
+  let cancelled = false;
+
+  (async () => {
+    try {
+      setStatus("loading");
+      setCategory(null);
+      setArticles([]);
+      setRelatedCommunity(null);
+
+      /* ── 1. Category detail ─────────────────────────────────── */
+      const catRes = await fetch(
+        `${API_BASE}/kategori/${encodeURIComponent(slug)}`,
+        {
+          signal: controller.signal,
+          cache: "no-store",
+          headers: { Accept: "application/json" },
+        }
+      );
+
+      if (cancelled) return;
+
+      if (catRes.status === 404) {
+        setStatus("missing");
+        return;
+      }
+      if (!catRes.ok) throw new Error("Gagal mengambil kategori");
+
+      const catData: KategoriPayload = await catRes.json();
+      if (cancelled) return;
+
+      /* ── 2. Articles ────────────────────────────────────────── */
+      const articlesPromise: Promise<ArtikelPayload[]> = fetch(
+        `${API_BASE}/artikel/?kategori=${encodeURIComponent(slug)}`,
+        {
+          signal: controller.signal,
+          cache: "no-store",
+          headers: { Accept: "application/json" },
+        }
+      )
+        .then((r) => (r.ok ? (r.json() as Promise<ArtikelPayload[]>) : []))
+        .catch(() => [] as ArtikelPayload[]);
+
+      /* ── 3. Linked community (optional) ─────────────────────── */
+      const communityPromise: Promise<KomunitasPayload | null> =
+        catData.community_slug
+          ? fetch(
+              `${API_BASE}/komunitas/${encodeURIComponent(
+                catData.community_slug
+              )}`,
+              {
+                signal: controller.signal,
+                cache: "no-store",
+                headers: { Accept: "application/json" },
+              }
+            )
+              .then((r) =>
+                r.ok ? (r.json() as Promise<KomunitasPayload>) : null
+              )
+              .catch(() => null)
+          : Promise.resolve(null);
+
+      const [articleData, communityData] = await Promise.all([
+        articlesPromise,
+        communityPromise,
+      ]);
+
+      if (cancelled) return;
+
+      setCategory(catData);
+      setArticles(articleData);
+      setRelatedCommunity(communityData);
+      setStatus("ready");
+    } catch (err) {
+      if (cancelled) return;
+      if ((err as Error).name === "AbortError") return;
+      console.error(err);
+      setStatus("error");
+    }
+  })();
+
+  return () => {
+    cancelled = true;
+    controller.abort();
+  };
+}, [slug]);
+
+  /* ── Render branches ──────────────────────────────────────────────
+     Call notFound() only via useEffect-free early return. Because we
+     guard against stale updates above, this will not fire for a slug
+     we're navigating AWAY from.
+  ─────────────────────────────────────────────────────────────────── */
+  if (status === "missing") {
     notFound();
   }
 
-  const categoryArticles = ARTICLES.filter((a) => a.categorySlug === slug);
+  if (status === "loading") {
+    return <div className="p-10">Loading...</div>;
+  }
+
+  if (status === "error" || !category) {
+    return (
+      <div className="p-10 text-center text-ink-muted">
+        Terjadi kesalahan saat memuat kategori. Silakan coba lagi.
+      </div>
+    );
+  }
+
+  const hasCommunity = Boolean(relatedCommunity);
 
   return (
     <>
@@ -28,12 +190,21 @@ export default function KategoriDetailPage() {
       <section className="bg-gradient-to-b from-[#f7e8d8] to-paper pt-12 md:pt-[60px] pb-10 md:pb-[50px] border-b border-line-soft">
         <div className="max-w-[1280px] mx-auto px-5 md:px-10">
           <div className="text-[13px] text-ink-muted mb-3.5">
-            <Link href="/" className="text-terracotta hover:underline">Beranda</Link> ·{" "}
-            <Link href="/kategori" className="text-terracotta hover:underline">Kategori</Link> ·{" "}
-            {category.name}
+            <Link href="/" className="text-terracotta hover:underline">
+              Beranda
+            </Link>{" "}
+            ·{" "}
+            <Link href="/kategori" className="text-terracotta hover:underline">
+              Kategori
+            </Link>{" "}
+            · {category.name}
           </div>
-          <h1 className="font-serif text-3xl md:text-[48px] leading-tight mb-3">{category.name}</h1>
-          <p className="text-base md:text-[17px] text-ink-soft max-w-[720px]">{category.description}</p>
+          <h1 className="font-serif text-3xl md:text-[48px] leading-tight mb-3">
+            {category.name}
+          </h1>
+          <p className="text-base md:text-[17px] text-ink-soft max-w-[720px]">
+            {category.description ?? ""}
+          </p>
         </div>
       </section>
 
@@ -42,16 +213,16 @@ export default function KategoriDetailPage() {
         <div className="max-w-[1280px] mx-auto px-5 md:px-10">
           <div className="grid lg:grid-cols-[1fr_320px] gap-10 md:gap-[60px] items-start">
             <div className="grid md:grid-cols-2 gap-6">
-              {categoryArticles.length > 0 ? (
-                categoryArticles.map((article) => (
+              {articles.length > 0 ? (
+                articles.map((article) => (
                   <ArticleCard
                     key={article.id}
                     slug={article.slug}
                     title={article.title}
                     author={article.author}
-                    readTime={article.readTime}
-                    imageColor={article.imageColor}
-                    badge={article.badge}
+                    readTime={article.read_time}
+                    imageColor={article.image_color ?? "undefined"}
+                    badge={article.badge ?? undefined}
                   />
                 ))
               ) : (
@@ -67,15 +238,19 @@ export default function KategoriDetailPage() {
                   Tentang Kategori
                 </h4>
                 <p className="text-sm text-ink-soft leading-relaxed">
-                  {category.articleCount} berbagi cara kerja, alat, dan material yang dipakai pengrajin Bali sehari-hari.
+                  {category.article_count} artikel berbagi cara kerja, alat,
+                  dan material yang dipakai pengrajin Bali sehari-hari.
                 </p>
               </div>
-              <RelatedCommunityCta
-                label="Komunitas WhatsApp Terkait"
-                title="Tenun Endek & Pewarna Alami"
-                subtitle="142 anggota · Diskusi teknik aktif tiap hari"
-                onClick={() => showRules("endek")}
-              />
+
+              {hasCommunity && relatedCommunity && (
+                <RelatedCommunityCta
+                  label="Komunitas WhatsApp Terkait"
+                  title={relatedCommunity.name}
+                  subtitle={`${relatedCommunity.members} anggota`}
+                  onClick={() => showRules(relatedCommunity.id)}
+                />
+              )}
             </aside>
           </div>
         </div>
