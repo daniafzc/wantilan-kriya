@@ -12,3 +12,4 @@ pinned: false
 
 Market Trend & Product Success Predictor untuk UMKM Bali.
 # wantilan-kriya
+# wantilan-kriya
