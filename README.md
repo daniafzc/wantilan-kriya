@@ -1,13 +1,14 @@
 ---
-title: Wantilan V2
-emoji: 🏢
-colorFrom: purple
-colorTo: gray
+title: Wantilan Kriya
+emoji: 🌺
+colorFrom: orange
+colorTo: yellow
 sdk: gradio
-sdk_version: 6.14.0
-python_version: '3.13'
+sdk_version: "4.44.0"
 app_file: app.py
 pinned: false
+license: mit
 ---
 
-Check out the configuration reference at https://huggingface.co/docs/hub/spaces-config-reference
+# 🌺 Wantilan Kriya v2
+Market Trend & Product Success Predictor untuk UMKM Bali.
