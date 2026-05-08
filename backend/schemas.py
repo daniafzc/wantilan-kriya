@@ -30,7 +30,7 @@ class KategoriBase(BaseModel):
     nama: str
     deskripsi: Optional[str] = None
     warna: Optional[str] = None
-
+    komunitas_id: Optional[int] = None
 
 class KategoriCreate(KategoriBase):
     pass
@@ -40,7 +40,7 @@ class KategoriUpdate(BaseModel):
     nama: Optional[str] = None
     deskripsi: Optional[str] = None
     warna: Optional[str] = None
-
+    komunitas_id: Optional[int] = None
 
 class KategoriResponse(BaseModel):
     """Frontend-friendly shape (English keys, string id, articleCount)."""
@@ -50,11 +50,14 @@ class KategoriResponse(BaseModel):
     description: Optional[str]       # deskripsi
     color: Optional[str]             # warna
     article_count: int = 0           # computed from relationship
+    community: Optional[str] = None
+    community_slug: Optional[str] = None
 
     model_config = {"from_attributes": True}
 
     @classmethod
     def from_orm_ext(cls, obj, article_count: int = 0) -> "KategoriResponse":
+        komunitas = obj.komunitas
         return cls(
             id=str(obj.id),
             slug=obj.slug,
@@ -62,6 +65,8 @@ class KategoriResponse(BaseModel):
             description=obj.deskripsi,
             color=obj.warna,
             article_count=article_count,
+            community=komunitas.nama if komunitas else None,
+            community_slug=komunitas.slug if komunitas else None,
         )
 
 
@@ -83,7 +88,7 @@ class ArtikelBase(BaseModel):
     image_color: Optional[str] = None
     diterbitkan: bool = False
     kategori_id: Optional[int] = None
-
+    komunitas_id: Optional[int] = None
 
 class ArtikelCreate(ArtikelBase):
     pass
@@ -102,7 +107,7 @@ class ArtikelUpdate(BaseModel):
     image_color: Optional[str] = None
     diterbitkan: Optional[bool] = None
     kategori_id: Optional[int] = None
-
+    komunitas_id: Optional[int] = None
 
 class ArtikelResponse(BaseModel):
     """
@@ -126,12 +131,15 @@ class ArtikelResponse(BaseModel):
     category_slug: Optional[str]        # kategori.slug
     published: bool
     created_at: Optional[datetime]
+    community: Optional[str]
+    community_slug: Optional[str]
 
     model_config = {"from_attributes": True}
 
     @classmethod
     def from_orm_ext(cls, obj) -> "ArtikelResponse":
         cat = obj.kategori
+        komunitas = obj.komunitas
         return cls(
             id=str(obj.id),
             slug=obj.slug,
@@ -147,6 +155,8 @@ class ArtikelResponse(BaseModel):
             image_color=obj.image_color,
             category=cat.nama if cat else None,
             category_slug=cat.slug if cat else None,
+            community=komunitas.nama if komunitas else None,
+            community_slug=komunitas.slug if komunitas else None,
             published=obj.diterbitkan,
             created_at=obj.created_at,
         )

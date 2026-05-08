@@ -9,6 +9,7 @@ import json
 from typing import List, Optional
 
 from sqlalchemy.orm import Session
+from sqlalchemy import or_
 
 import models
 import schemas
@@ -74,19 +75,39 @@ def get_all_artikel(
     skip: int = 0,
     limit: int = 50,
     kategori_slug: Optional[str] = None,
+    search: Optional[str] = None,
     published_only: bool = True,
 ) -> List[models.Artikel]:
     q = db.query(models.Artikel)
+
     if published_only:
         q = q.filter(models.Artikel.diterbitkan == True)  # noqa: E712
+
     if kategori_slug:
         kat = get_kategori_by_slug(db, kategori_slug)
-        if kat:
-            q = q.filter(models.Artikel.kategori_id == kat.id)
-        else:
+        if not kat:
             return []
-    return q.order_by(models.Artikel.created_at.desc()).offset(skip).limit(limit).all()
+        q = q.filter(models.Artikel.kategori_id == kat.id)
 
+    if search:
+        pattern = f"%{search}%"
+        q = q.filter(
+            or_(
+                models.Artikel.judul.ilike(pattern),
+                models.Artikel.excerpt.ilike(pattern),
+                models.Artikel.content.ilike(pattern),
+                models.Artikel.author.ilike(pattern),
+                models.Artikel.daerah.ilike(pattern),
+                models.Artikel.badge.ilike(pattern),
+            )
+        )
+
+    return (
+        q.order_by(models.Artikel.created_at.desc())
+         .offset(skip)
+         .limit(limit)
+         .all()
+    )
 
 def get_artikel_by_slug(db: Session, slug: str) -> Optional[models.Artikel]:
     return db.query(models.Artikel).filter(models.Artikel.slug == slug).first()

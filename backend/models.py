@@ -26,6 +26,9 @@ class Kategori(Base):
     created_at  = Column(DateTime(timezone=True), server_default=func.now())
 
     artikel     = relationship("Artikel", back_populates="kategori")
+    #Tambahan
+    komunitas       = relationship("Komunitas", back_populates="kategori")
+    komunitas_id    = Column(Integer, ForeignKey("komunitas.id"), nullable=True)
 
 
 class Artikel(Base):
@@ -49,6 +52,10 @@ class Artikel(Base):
 
     kategori        = relationship("Kategori", back_populates="artikel")
 
+    komunitas       = relationship("Komunitas", back_populates="artikel")
+    komunitas_id    = Column(Integer, ForeignKey("komunitas.id"), nullable=True)
+
+
 
 class Komunitas(Base):
     __tablename__ = "komunitas"
@@ -63,6 +70,8 @@ class Komunitas(Base):
     rules           = Column(Text, nullable=True)              # JSON-encoded list → frontend: rules[]
     created_at      = Column(DateTime(timezone=True), server_default=func.now())
 
+    artikel         = relationship("Artikel", back_populates="komunitas")
+    kategori        = relationship("Kategori", back_populates="komunitas")
 
 class Submission(Base):
     __tablename__ = "submission"
