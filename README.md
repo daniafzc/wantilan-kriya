@@ -11,3 +11,4 @@ pinned: false
 # 🌺 Wantilan Kriya v2
 
 Market Trend & Product Success Predictor untuk UMKM Bali.
+# wantilan-kriya
