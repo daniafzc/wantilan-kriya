@@ -1,0 +1,11 @@
+{
+  "version": "2.1.0",
+  "bert_model": "sentence-transformers/all-MiniLM-L6-v2",
+  "rmse": 29.44287617084051,
+  "mae": 19.403739700699873,
+  "r2": 0.33908753503581,
+  "mape": 64.66233247655207,
+  "features": 406,
+  "train_rows": 8975,
+  "test_rows": 2244
+}
