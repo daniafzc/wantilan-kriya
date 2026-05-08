@@ -23,6 +23,7 @@ router = APIRouter()
 @router.get("/", response_model=List[schemas.ArtikelResponse])
 def list_artikel(
     kategori: Optional[str] = Query(None, description="Filter by kategori slug"),
+    search: Optional[str] = Query(None, description="Keyword search"),
     skip: int = Query(0, ge=0),
     limit: int = Query(50, ge=1, le=200),
     include_unpublished: bool = Query(False),
@@ -33,10 +34,10 @@ def list_artikel(
         skip=skip,
         limit=limit,
         kategori_slug=kategori,
+        search=search,
         published_only=not include_unpublished,
     )
     return [schemas.ArtikelResponse.from_orm_ext(a) for a in items]
-
 
 @router.get("/{slug}", response_model=schemas.ArtikelResponse)
 def get_artikel(slug: str, db: Session = Depends(get_db)):
