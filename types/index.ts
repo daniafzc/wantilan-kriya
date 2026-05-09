@@ -4,15 +4,17 @@ export interface Article {
   title: string;
   excerpt: string;
   category: string;
-  categorySlug: string;
+  category_slug: string;
+  community?: string;
+  community_slug?: string;
   author: string;
-  authorInitial: string;
-  authorRole: string;
-  authorLocation: string;
-  readTime: string;
+  author_initial: string;
+  author_role: string;
+  author_location: string;
+  read_time: string;
   imageColor: string;
   badge: string;
-  content?: string;
+  content: string;
 }
 
 export interface Community {
