@@ -170,6 +170,7 @@ class KomunitasBase(BaseModel):
     slug: str
     nama: str
     deskripsi: Optional[str] = None
+    moderator: Optional[str] = None   
     jumlah_anggota: int = 0
     link_whatsapp: Optional[str] = None
     warna: Optional[str] = None
@@ -177,7 +178,7 @@ class KomunitasBase(BaseModel):
 
 
 class KomunitasCreate(KomunitasBase):
-    pass
+    rules: List[str] = []
 
 
 class KomunitasUpdate(BaseModel):

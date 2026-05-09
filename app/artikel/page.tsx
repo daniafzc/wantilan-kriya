@@ -10,9 +10,9 @@ import { IoIosSearch } from "react-icons/io";
 // Map label (UI) → slug (what the backend expects)
 const filters = [
   { label: "Semua",           slug: "" },
-  { label: "Teknik & Bahan",  slug: "teknik-bahan" },
-  { label: "Tradisi & Makna", slug: "tradisi-makna" },
-  { label: "Pasar & Bisnis",  slug: "pasar-bisnis" },
+  { label: "Teknik & Bahan",  slug: "teknik" },
+  { label: "Tradisi & Makna", slug: "tradisi" },
+  { label: "Pasar & Bisnis",  slug: "pasar" },
   { label: "Kolaborasi",      slug: "kolaborasi" },
 ];
 

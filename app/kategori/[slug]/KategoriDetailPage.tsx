@@ -248,7 +248,7 @@ useEffect(() => {
                   label="Komunitas WhatsApp Terkait"
                   title={relatedCommunity.name}
                   subtitle={`${relatedCommunity.members} anggota`}
-                  onClick={() => showRules(relatedCommunity.id)}
+                  onClick={() => showRules(relatedCommunity)}
                 />
               )}
             </aside>

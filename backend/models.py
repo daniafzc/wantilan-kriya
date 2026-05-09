@@ -72,6 +72,7 @@ class Komunitas(Base):
 
     artikel         = relationship("Artikel", back_populates="komunitas")
     kategori        = relationship("Kategori", back_populates="komunitas")
+    moderator       = Column(String, nullable=True)  
 
 class Submission(Base):
     __tablename__ = "submission"
