@@ -20,70 +20,31 @@ export function Hero() {
               Pengetahuan kriya yang tumbuh bersama komunitas.
             </h1>
             <p className="text-base md:text-lg text-ink-soft leading-relaxed mb-6 md:mb-8 max-w-[540px]">
-              Wantilan Kriya adalah perpustakaan cerita dan teknik dari
-              pengrajin Bali, dilengkapi pintu masuk ke komunitas WhatsApp per
-              topik. Tanpa daftar akun, tanpa rumit.
+              Wantilan Kriya adalah perpustakaan cerita dan teknik dari pengrajin Bali, dilengkapi pintu masuk ke komunitas WhatsApp per topik. Tanpa daftar akun, tanpa rumit.
             </p>
             <div className="flex flex-wrap gap-3">
               <Link href="/submit">
                 <Button size="lg">+ Bagikan Cerita Anda →</Button>
               </Link>
               <Link href="/artikel">
-                <Button variant="secondary" size="lg">
-                  Telusuri Artikel
-                </Button>
+                <Button variant="secondary" size="lg">Telusuri Artikel</Button>
               </Link>
             </div>
           </div>
 
           {/* Visual tiles - desktop only */}
           <div className="hidden md:block relative h-[440px]">
-            {/* Tenun Endek - foto1 */}
-            <div className="absolute top-0 left-[30px] w-[280px] h-[200px] rounded-2xl shadow-[0_12px_30px_rgba(0,0,0,0.12)] overflow-hidden group hover:-translate-y-1 transition-transform">
-              <img
-                src="/tenun-endek.webp"
-                alt="Tenun Endek"
-                className="w-full h-full object-cover"
-              />
-              <span className="absolute bottom-3.5 left-3.5 bg-white/95 px-3 py-1.5 rounded-md text-xs font-semibold">
-                Tenun Endek
-              </span>
+            <div className="absolute top-0 left-[30px] w-[280px] h-[200px] rounded-2xl bg-gradient-to-br from-[#c9d6c4] to-green shadow-[0_12px_30px_rgba(0,0,0,0.12)] overflow-hidden group hover:-translate-y-1 transition-transform">
+              <span className="absolute bottom-3.5 left-3.5 bg-white/95 px-3 py-1.5 rounded-md text-xs font-semibold">Tenun Endek</span>
             </div>
-
-            {/* Ekspor - foto2 */}
-            <div className="absolute top-[60px] right-0 w-[220px] h-[220px] rounded-2xl shadow-[0_12px_30px_rgba(0,0,0,0.12)] overflow-hidden group hover:-translate-y-1 transition-transform">
-              <img
-                src="/foto2.webp"
-                alt="Topeng Bali"
-                className="w-full h-full object-cover"
-              />
-              <span className="absolute bottom-3.5 left-3.5 bg-white/95 px-3 py-1.5 rounded-md text-xs font-semibold">
-                Topeng Bali
-              </span>
+            <div className="absolute top-[60px] right-0 w-[220px] h-[220px] rounded-2xl bg-gradient-to-br from-[#e6bfb1] to-terracotta shadow-[0_12px_30px_rgba(0,0,0,0.12)] overflow-hidden group hover:-translate-y-1 transition-transform">
+              <span className="absolute bottom-3.5 left-3.5 bg-white/95 px-3 py-1.5 rounded-md text-xs font-semibold">Ekspor</span>
             </div>
-
-            {/* Ukir Kayu - foto3 */}
-            <div className="absolute bottom-5 left-0 w-[200px] h-[180px] rounded-2xl shadow-[0_12px_30px_rgba(0,0,0,0.12)] overflow-hidden group hover:-translate-y-1 transition-transform">
-              <img
-                src="/ukir-kayu.webp"
-                alt="Ukir Kayu"
-                className="w-full h-full object-cover"
-              />
-              <span className="absolute bottom-3.5 left-3.5 bg-white/95 px-3 py-1.5 rounded-md text-xs font-semibold">
-                Ukir Kayu
-              </span>
+            <div className="absolute bottom-5 left-0 w-[200px] h-[180px] rounded-2xl bg-gradient-to-br from-[#f1e3c4] to-gold shadow-[0_12px_30px_rgba(0,0,0,0.12)] overflow-hidden group hover:-translate-y-1 transition-transform">
+              <span className="absolute bottom-3.5 left-3.5 bg-white/95 px-3 py-1.5 rounded-md text-xs font-semibold">Ukir Kayu</span>
             </div>
-
-            {/* Perak Celuk - foto4 */}
-            <div className="absolute bottom-0 right-[60px] w-[240px] h-[160px] rounded-2xl shadow-[0_12px_30px_rgba(0,0,0,0.12)] overflow-hidden group hover:-translate-y-1 transition-transform">
-              <img
-                src="/perak-celuk.webp"
-                alt="Perak Celuk"
-                className="w-full h-full object-cover"
-              />
-              <span className="absolute bottom-3.5 left-3.5 bg-white/95 px-3 py-1.5 rounded-md text-xs font-semibold">
-                Perak Celuk
-              </span>
+            <div className="absolute bottom-0 right-[60px] w-[240px] h-[160px] rounded-2xl bg-gradient-to-br from-[#e0c8d4] to-plum shadow-[0_12px_30px_rgba(0,0,0,0.12)] overflow-hidden group hover:-translate-y-1 transition-transform">
+              <span className="absolute bottom-3.5 left-3.5 bg-white/95 px-3 py-1.5 rounded-md text-xs font-semibold">Perak Celuk</span>
             </div>
           </div>
         </div>
