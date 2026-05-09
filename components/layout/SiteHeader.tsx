@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
 import { NAV_ITEMS, SITE_NAME, SITE_TAGLINE } from "@/lib/constants";
@@ -23,13 +24,20 @@ export function SiteHeader() {
         <div className="max-w-[1280px] mx-auto px-5 md:px-10 py-4 flex items-center gap-8">
           {/* Logo */}
           <Link href="/" className="flex items-center gap-2.5 shrink-0">
-            <div className="w-9 h-9 bg-terracotta rounded-full relative">
-              <div className="absolute inset-[7px] bg-paper rounded-full" />
-              <div className="absolute inset-[13px] bg-terracotta rounded-full" />
-            </div>
+            <Image
+              src="/logo.webp"
+              alt="Wantilan Kriya"
+              width={36}
+              height={36}
+              className="rounded-full object-cover"
+            />
             <div className="leading-none">
-              <span className="font-serif text-lg font-bold text-ink block">{SITE_NAME}</span>
-              <span className="text-[10.5px] font-medium text-ink-muted uppercase tracking-wider">{SITE_TAGLINE}</span>
+              <span className="font-serif text-lg font-bold text-ink block">
+                {SITE_NAME}
+              </span>
+              <span className="text-[10.5px] font-medium text-ink-muted uppercase tracking-wider">
+                {SITE_TAGLINE}
+              </span>
             </div>
           </Link>
 
@@ -43,7 +51,7 @@ export function SiteHeader() {
                   "px-3.5 py-2 rounded-md text-sm font-medium transition-colors",
                   isActive(item.href)
                     ? "text-terracotta bg-terracotta-soft"
-                    : "text-ink-soft hover:text-ink hover:bg-sand-soft"
+                    : "text-ink-soft hover:text-ink hover:bg-sand-soft",
                 )}
               >
                 {item.label}

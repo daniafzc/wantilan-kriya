@@ -1,6 +1,5 @@
 "use client";
 
-import { useState } from "react";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
 import { Badge } from "@/components/ui/Badge";
@@ -11,7 +10,7 @@ interface ArticleCardProps {
   author: string;
   readTime: string;
   imageColor: string;
-  badge?: string;
+  badge: string;
   badgeColor?: string;
   className?: string;
 }

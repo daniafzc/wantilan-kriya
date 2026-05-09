@@ -1,69 +1,33 @@
 "use client";
 
-import { Article } from "@/types";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import Link from "next/link";
+import { ARTICLES } from "@/lib/constants";
 import { ArticleCard } from "@/components/shared/ArticleCard";
 import { cn } from "@/lib/utils";
 import { IoIosSearch } from "react-icons/io";
 
-// Map label (UI) → slug (what the backend expects)
 const filters = [
-  { label: "Semua",           slug: "" },
-  { label: "Teknik & Bahan",  slug: "teknik" },
-  { label: "Tradisi & Makna", slug: "tradisi" },
-  { label: "Pasar & Bisnis",  slug: "pasar" },
-  { label: "Kolaborasi",      slug: "kolaborasi" },
+  "Semua",
+  "Teknik & Bahan",
+  "Tradisi & Makna",
+  "Pasar & Bisnis",
+  "Kolaborasi",
 ];
 
-const API_BASE =
-  process.env.NEXT_PUBLIC_API_URL ?? "http://127.0.0.1:8000";
-
 export default function ArtikelPage() {
-  const [activeSlug, setActiveSlug] = useState("");       // "" = Semua
-  const [searchInput, setSearchInput] = useState("");     // raw input
-  const [searchQuery, setSearchQuery] = useState("");     // debounced
-  const [articles, setArticles] = useState<Article[]>([]);
-  const [loading, setLoading] = useState(false);
+  const [activeFilter, setActiveFilter] = useState("Semua");
+  const [searchQuery, setSearchQuery] = useState("");
 
-  // ── Debounce search input (300ms) ─────────────────────────────
-  useEffect(() => {
-    const t = setTimeout(() => setSearchQuery(searchInput.trim()), 300);
-    return () => clearTimeout(t);
-  }, [searchInput]);
-
-  // ── Fetch whenever filter/search changes ──────────────────────
-  useEffect(() => {
-    const controller = new AbortController();
-
-    const fetchArticles = async () => {
-      try {
-        setLoading(true);
-        const params = new URLSearchParams();
-        if (activeSlug)  params.append("kategori", activeSlug);
-        if (searchQuery) params.append("search", searchQuery);
-
-        // NOTE: trailing slash matches FastAPI's prefix="/artikel" + path="/"
-        const res = await fetch(
-          `${API_BASE}/artikel/?${params.toString()}`,
-          { signal: controller.signal, cache: "no-store" },
-        );
-        if (!res.ok) throw new Error("Gagal mengambil data artikel");
-        const data = await res.json();
-        setArticles(data);
-      } catch (err) {
-        if ((err as Error).name !== "AbortError") {
-          console.error(err);
-          setArticles([]);
-        }
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchArticles();
-    return () => controller.abort();
-  }, [activeSlug, searchQuery]);
+  const filteredArticles = ARTICLES.filter((article) => {
+    const matchesFilter =
+      activeFilter === "Semua" || article.category === activeFilter;
+    const matchesSearch =
+      searchQuery === "" ||
+      article.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      article.author.toLowerCase().includes(searchQuery.toLowerCase());
+    return matchesFilter && matchesSearch;
+  });
 
   return (
     <>
@@ -95,49 +59,41 @@ export default function ArtikelPage() {
               type="text"
               placeholder="Cari artikel, teknik, motif, atau cerita pengrajin..."
               className="flex-1 bg-transparent text-base text-ink placeholder:text-ink-muted outline-none"
-              value={searchInput}
-              onChange={(e) => setSearchInput(e.target.value)}
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
             />
           </div>
 
           <div className="flex flex-wrap gap-2.5 mb-8 md:mb-10">
-            {filters.map((f) => (
+            {filters.map((filter) => (
               <button
-                key={f.slug || "all"}
-                onClick={() => setActiveSlug(f.slug)}
+                key={filter}
+                onClick={() => setActiveFilter(filter)}
                 className={cn(
                   "px-4 md:px-[18px] py-2 rounded-full text-[13.5px] transition-all",
-                  activeSlug === f.slug
+                  activeFilter === filter
                     ? "bg-ink text-white border-ink"
                     : "bg-white text-ink-soft border border-line hover:border-ink",
                 )}
               >
-                {f.label}
+                {filter}
               </button>
             ))}
           </div>
 
-          {loading ? (
-            <p className="text-ink-muted">Memuat artikel…</p>
-          ) : articles.length === 0 ? (
-            <p className="text-ink-muted">
-              Tidak ada artikel yang cocok dengan pencarian kamu.
-            </p>
-          ) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {articles.map((article) => (
-                <ArticleCard
-                  key={article.id}
-                  slug={article.slug}
-                  title={article.title}
-                  author={article.author}
-                  readTime={article.read_time}
-                  imageColor={article.imageColor}
-                  badge={article.badge}
-                />
-              ))}
-            </div>
-          )}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {filteredArticles.map((article) => (
+              <ArticleCard
+                key={article.id}
+                slug={article.slug}
+                title={article.title}
+                author={article.author}
+                readTime={article.readTime}
+                imageColor={article.imageColor}
+                badge={article.badge}
+              />
+            ))}
+          </div>
         </div>
       </section>
     </>
