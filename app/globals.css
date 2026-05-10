@@ -1,0 +1,81 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --ink: #1a1a1a;
+  --ink-soft: #4a4a4a;
+  --ink-muted: #7a7a7a;
+  --paper: #fafaf7;
+  --line: #e5e0d3;
+  --line-soft: #efeae0;
+  --terracotta: #c2553a;
+  --terracotta-soft: #f3d9d0;
+  --terracotta-deep: #9c402a;
+  --sand: #d9c9a6;
+  --sand-soft: #f4ecd8;
+  --green: #4a6b48;
+  --green-soft: #d6e0d3;
+  --gold: #b8893d;
+  --gold-soft: #f1e3c4;
+  --plum: #6b3f5b;
+  --plum-soft: #e8d6df;
+  --teal: #2f6b6b;
+  --teal-soft: #d1e3e3;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--paper);
+  color: var(--ink);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--line);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--sand);
+}
+
+/* Selection */
+::selection {
+  background: var(--terracotta-soft);
+  color: var(--ink);
+}
+
+/* Focus visible */
+:focus-visible {
+  outline: 2px solid var(--terracotta);
+  outline-offset: 2px;
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
