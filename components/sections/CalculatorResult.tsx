@@ -15,9 +15,7 @@ export function CalculatorResultDisplay() {
         <div className="font-serif text-4xl md:text-[56px] font-bold mb-2 leading-none">
           $45 — $60
         </div>
-        <div className="text-sm opacity-90 mb-6">
-          ≈ Rp 720.000 — Rp 960.000
-        </div>
+        <div className="text-sm opacity-90 mb-6">≈ Rp 720.000 — Rp 960.000</div>
         <div className="flex flex-col gap-2">
           <Link href="/submit">
             <Button className="w-full bg-white text-terracotta hover:bg-white/90 border border-white">
