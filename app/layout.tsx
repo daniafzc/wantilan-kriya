@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Fraunces, Work_Sans } from "next/font/google";
+import { Atkinson_Hyperlegible, Fraunces, Work_Sans } from "next/font/google";
 import "./globals.css";
 import { SiteHeader } from "@/components/layout/SiteHeader";
 import { SiteFooter } from "@/components/layout/SiteFooter";
@@ -15,6 +15,13 @@ const workSans = Work_Sans({
   subsets: ["latin"],
   variable: "--font-work-sans",
   display: "swap",
+});
+
+const atkinsonHyperlegible = Atkinson_Hyperlegible({
+  subsets: ["latin"],
+  variable: "--font-atkinson-hyperlegible",
+  display: "swap",
+  weight: ["400", "700"],
 });
 
 export const metadata: Metadata = {
@@ -47,7 +54,10 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="id" className={`${fraunces.variable} ${workSans.variable}`}>
+    <html
+      lang="id"
+      className={`${fraunces.variable} ${atkinsonHyperlegible.variable}`}
+    >
       <body className="font-sans antialiased min-h-screen flex flex-col">
         <SiteHeader />
         <main className="flex-1">{children}</main>

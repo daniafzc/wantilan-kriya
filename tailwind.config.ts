@@ -32,7 +32,7 @@ const config: Config = {
       fontFamily: {
         serif: ["var(--font-fraunces)", "Georgia", "serif"],
         sans: [
-          "var(--font-work-sans)",
+          "var(--font-atkinson-hyperlegible)",
           "-apple-system",
           "BlinkMacSystemFont",
           "Segoe UI",
