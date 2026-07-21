@@ -47,7 +47,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="id">
+    <html lang="id" className={`${fraunces.variable} ${workSans.variable}`}>
       <body className="font-sans antialiased min-h-screen flex flex-col">
         <SiteHeader />
         <main className="flex-1">{children}</main>
