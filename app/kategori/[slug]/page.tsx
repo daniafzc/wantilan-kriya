@@ -1,4 +1,3 @@
-// app/kategori/[slug]/page.tsx
 import KategoriDetailPage from "./KategoriDetailPage";
 
 export const dynamic = "force-dynamic";

@@ -1,11 +1,11 @@
-// app/artikel/[slug]/page.tsx
 import ArtikelDetailPage from "./ArtikelDetailPage";
 
 // Page menerima params dari Next.js
 interface PageProps {
-  params: { slug: string };
+  params: Promise<{ slug: string }>;
 }
 
-export default function Page({ params }: PageProps) {
-  return <ArtikelDetailPage slug={params.slug} />;
+export default async function Page({ params }: PageProps) {
+  const { slug } = await params;
+  return <ArtikelDetailPage slug={slug} />;
 }
