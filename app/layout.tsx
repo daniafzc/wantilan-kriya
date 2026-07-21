@@ -1,8 +1,21 @@
 import type { Metadata } from "next";
+import { Fraunces, Work_Sans } from "next/font/google";
 import "./globals.css";
 import { SiteHeader } from "@/components/layout/SiteHeader";
 import { SiteFooter } from "@/components/layout/SiteFooter";
 import { SITE_NAME, SITE_DESCRIPTION } from "@/lib/constants";
+
+const fraunces = Fraunces({
+  subsets: ["latin"],
+  variable: "--font-fraunces",
+  display: "swap",
+});
+
+const workSans = Work_Sans({
+  subsets: ["latin"],
+  variable: "--font-work-sans",
+  display: "swap",
+});
 
 export const metadata: Metadata = {
   title: {
@@ -10,7 +23,15 @@ export const metadata: Metadata = {
     template: `%s — ${SITE_NAME}`,
   },
   description: SITE_DESCRIPTION,
-  keywords: ["pengrajin", "Bali", "kriya", "tenun", "ukiran", "perak", "komunitas"],
+  keywords: [
+    "pengrajin",
+    "Bali",
+    "kriya",
+    "tenun",
+    "ukiran",
+    "perak",
+    "komunitas",
+  ],
   authors: [{ name: "Control + Craft Bali" }],
   openGraph: {
     title: SITE_NAME,

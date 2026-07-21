@@ -30,8 +30,9 @@ const config: Config = {
         "teal-soft": "#d1e3e3",
       },
       fontFamily: {
-        serif: ["Georgia", "Times New Roman", "serif"],
+        serif: ["var(--font-fraunces)", "Georgia", "serif"],
         sans: [
+          "var(--font-work-sans)",
           "-apple-system",
           "BlinkMacSystemFont",
           "Segoe UI",
