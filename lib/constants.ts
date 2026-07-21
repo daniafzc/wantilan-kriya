@@ -11,7 +11,7 @@ export const NAV_ITEMS = [
   {
     id: "kalkulator",
     label: "Kalkulator Harga",
-    href: "https://huggingface.co/spaces/barudakwell/wantilan-v2",
+    href: "/kalkulator",
   },
   { id: "tentang", label: "Tentang", href: "/tentang" },
 ] as const;

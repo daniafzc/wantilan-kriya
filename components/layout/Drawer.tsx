@@ -28,7 +28,9 @@ export function Drawer({ open, onClose }: DrawerProps) {
       <div
         className={cn(
           "fixed inset-0 bg-ink/40 z-[60] transition-opacity duration-250",
-          open ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
+          open
+            ? "opacity-100 pointer-events-auto"
+            : "opacity-0 pointer-events-none",
         )}
         onClick={onClose}
       />
@@ -38,7 +40,7 @@ export function Drawer({ open, onClose }: DrawerProps) {
         className={cn(
           "fixed top-0 right-0 h-full w-[280px] bg-paper z-[61] shadow-[-8px_0_24px_rgba(0,0,0,0.15)]",
           "flex flex-col transition-transform duration-280 ease-out",
-          open ? "translate-x-0" : "translate-x-full"
+          open ? "translate-x-0" : "translate-x-full",
         )}
       >
         <div className="p-5 flex items-center justify-between border-b border-line-soft">
@@ -72,7 +74,8 @@ export function Drawer({ open, onClose }: DrawerProps) {
         </nav>
 
         <div className="p-5 border-t border-line-soft text-xs text-ink-muted leading-relaxed">
-          🔓 Tanpa login. Tanpa akun.<br />
+          Tanpa login. Tanpa akun.
+          <br />
           Cukup nama dan daerah asal.
         </div>
       </div>
